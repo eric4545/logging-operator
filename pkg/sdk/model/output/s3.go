@@ -141,6 +141,8 @@ type S3OutputConfig struct {
 	AssumeRoleCredentials *S3AssumeRoleCredentials `json:"assume_role_credentials,omitempty"`
 	// +docLink:"Instance Profile Credentials,#Instance-Profile-Credentials"
 	InstanceProfileCredentials *S3InstanceProfileCredentials `json:"instance_profile_credentials,omitempty"`
+	// +docLink:"Web Identity Credentials,#Web-Identity-Credentials"
+	WebIdentityCredentials *S3WebIdentityCredentials `json:"web_identity_credentials,omitempty"`
 	// +docLink:"Shared Credentials,#Shared-Credentials"
 	SharedCredentials *S3SharedCredentials `json:"shared_credentials,omitempty"`
 }
@@ -175,6 +177,22 @@ type S3InstanceProfileCredentials struct {
 	HttpReadTimeout string `json:"http_read_timeout,omitempty"`
 	// Number of times to retry when retrieving credentials
 	Retries string `json:"retries,omitempty"`
+}
+
+// +kubebuilder:object:generate=true
+// +docName:"Web Identity Credentials"
+// web_identity_credentials
+type S3WebIdentityCredentials struct {
+	// // IP address (default:169.254.169.254)
+	// IpAddress string `json:"ip_address,omitempty"`
+	// // Port number (default:80)
+	// Port string `json:"port,omitempty"`
+	// // Number of seconds to wait for the connection to open
+	// HttpOpenTimeout string `json:"http_open_timeout,omitempty"`
+	// // Number of seconds to wait for one block to be read
+	// HttpReadTimeout string `json:"http_read_timeout,omitempty"`
+	// // Number of times to retry when retrieving credentials
+	// Retries string `json:"retries,omitempty"`
 }
 
 // +kubebuilder:object:generate=true
@@ -257,11 +275,13 @@ func (c *S3OutputConfig) validateAndSetCredentials(s3 *types.OutputPlugin, secre
 			s3.SubDirectives = append(s3.SubDirectives, directive)
 		}
 	}
-	if c.AssumeRoleCredentials == nil &&
-		c.InstanceProfileCredentials == nil &&
-		c.SharedCredentials == nil &&
-		(c.AwsAccessKey == nil || c.AwsSecretKey == nil) {
-		return errors.New("One of AssumeRoleCredentials or SharedCredentials or InstanceProfileCredentials must be configured")
+	if c.WebIdentityCredentials != nil {
+		if directive, err := types.NewFlatDirective(types.PluginMeta{Directive: "web_identity_credentials"},
+			c.WebIdentityCredentials, secretLoader); err != nil {
+			return err
+		} else {
+			s3.SubDirectives = append(s3.SubDirectives, directive)
+		}
 	}
 	return nil
 }
