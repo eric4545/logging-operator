@@ -27,11 +27,12 @@ func (r *Reconciler) FluentdObjectMeta(name, component string) metav1.ObjectMeta
 		Labels:    r.getFluentdLabels(component),
 		OwnerReferences: []metav1.OwnerReference{
 			{
-				APIVersion: r.Logging.APIVersion,
-				Kind:       r.Logging.Kind,
-				Name:       r.Logging.Name,
-				UID:        r.Logging.UID,
-				Controller: util.BoolPointer(true),
+				APIVersion:         r.Logging.APIVersion,
+				BlockOwnerDeletion: util.BoolPointer(true),
+				Kind:               r.Logging.Kind,
+				Name:               r.Logging.Name,
+				UID:                r.Logging.UID,
+				Controller:         util.BoolPointer(true),
 			},
 		},
 	}
@@ -45,11 +46,12 @@ func (r *Reconciler) FluentdObjectMetaClusterScope(name, component string) metav
 		Labels: r.getFluentdLabels(component),
 		OwnerReferences: []metav1.OwnerReference{
 			{
-				APIVersion: r.Logging.APIVersion,
-				Kind:       r.Logging.Kind,
-				Name:       r.Logging.Name,
-				UID:        r.Logging.UID,
-				Controller: util.BoolPointer(true),
+				APIVersion:         r.Logging.APIVersion,
+				BlockOwnerDeletion: util.BoolPointer(true),
+				Kind:               r.Logging.Kind,
+				Name:               r.Logging.Name,
+				UID:                r.Logging.UID,
+				Controller:         util.BoolPointer(true),
 			},
 		},
 	}
