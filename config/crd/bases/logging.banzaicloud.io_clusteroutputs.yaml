@@ -4626,6 +4626,27 @@ spec:
                   description: Given a threshold to treat events as delay, output
                     warning logs if delayed events were put into s3
                   type: string
+                web_identity_credentials:
+                  description: web_identity_credentials
+                  properties:
+                    duration_seconds:
+                      description: '"The duration, in seconds, of the role session
+                        (900-43200)"'
+                      type: string
+                    policy:
+                      description: '"An IAM policy in JSON format"'
+                      type: string
+                    role_arn:
+                      description: The Amazon Resource Name (ARN) of the role to assume
+                      type: string
+                    role_session_name:
+                      description: An identifier for the assumed role session
+                      type: string
+                    web_identity_token_file:
+                      description: '"The absolute path to the file on disk containing
+                        the OIDC token"'
+                      type: string
+                  type: object
               required:
               - s3_bucket
               type: object

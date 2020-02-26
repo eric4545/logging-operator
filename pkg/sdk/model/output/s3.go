@@ -183,16 +183,16 @@ type S3InstanceProfileCredentials struct {
 // +docName:"Web Identity Credentials"
 // web_identity_credentials
 type S3WebIdentityCredentials struct {
-	// // IP address (default:169.254.169.254)
-	// IpAddress string `json:"ip_address,omitempty"`
-	// // Port number (default:80)
-	// Port string `json:"port,omitempty"`
-	// // Number of seconds to wait for the connection to open
-	// HttpOpenTimeout string `json:"http_open_timeout,omitempty"`
-	// // Number of seconds to wait for one block to be read
-	// HttpReadTimeout string `json:"http_read_timeout,omitempty"`
-	// // Number of times to retry when retrieving credentials
-	// Retries string `json:"retries,omitempty"`
+	// The Amazon Resource Name (ARN) of the role to assume
+	RoleArn string `json:"role_arn,omitempty"`
+	// An identifier for the assumed role session
+	RoleSessionName string `json:"role_session_name,omitempty"`
+	// "The absolute path to the file on disk containing the OIDC token"
+	WebIdentityTokenFile string `json:"web_identity_token_file,omitempty"`
+	// "An IAM policy in JSON format"
+	Policy string `json:"policy,omitempty"`
+	// "The duration, in seconds, of the role session (900-43200)"
+	DurationSeconds string `json:"duration_seconds,omitempty"`
 }
 
 // +kubebuilder:object:generate=true
